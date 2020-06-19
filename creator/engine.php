@@ -1,6 +1,6 @@
 <?php
-
-$tableName=$_GET['nombre'];
+if(isset($_GET['nombre']) && isset($_GET['primaryKey']) && isset($_GET['atributos'])){
+    $tableName=$_GET['nombre'];
 $primaryKey=$_GET['primaryKey'];
 
 $atributos=$_GET['atributos'];
@@ -41,5 +41,17 @@ fwrite($fileC,"\n\t}");
 fwrite($fileC,"\n}");
 fclose($fileC) or die("Unable to close file!");
 
-echo "Generación exitosa!";
+echo(json_encode(array(
+    "type"=>"sucess",
+    "message"=>"¡Modelo y controlador generados exitosamente!",
+    "data"=>null
+)));
+}else{
+    echo(json_encode(array(
+        "type"=>"error",
+        "message"=>"Datos faltantes en el request",
+        "data"=> null
+    )));
+}
+
 
