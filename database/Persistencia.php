@@ -34,7 +34,7 @@ class Persistencia{
         if ($parametros) {
             $index = 1;
             foreach ($parametros as $key => $parametro) {
-                $statement->bindValue($index, $parametro);
+                $statement->bindValue(":".$key, $parametro);
                 $index++;
             }
         }

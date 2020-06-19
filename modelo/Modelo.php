@@ -1,11 +1,67 @@
 <?php
-abstract class Modelo{
-    //Podrian no ser abstractas y usar todos los atributos que tenga esta clase
+class Modelo{
+    private $tableName;
+    private $primaryKey;//Es un string
 
-    //Por ejemplo, aquí bindear todos los atributos en el insert(a excepción del id)
-    abstract public function getInsertStatement();
+    public function __construct($nombre,$primaryKey) {
+        $this->tableName=$nombre;
+        $this->primaryKey=$primaryKey;
+    }
 
-    abstract public function getUpdateStatement();
+    public function getInsertStatement($props){
+        $stmt="INSERT INTO ".$this->tableName." (";
+        $size=sizeof($props);
+        foreach ($props as $key => $value) {
+                if($size != sizeof($props)){
+                    $stmt.=",";
+                }
+                $stmt.=$key;
+                $size--;
+        }
+        $stmt.=") VALUES (";
+        $size=sizeof($props);
+        foreach ($props as $key => $value) {
+            if($size != sizeof($props)){
+                $stmt.=",";
+            }
+            $stmt.=":".$key;
+            $size--;
+        }
+        $stmt.=")";
+        return $stmt;
+    }
 
-    abstract public function getDeleteStatement();
+    public function getUpdateStatement($props){
+        $stmt="UPDATE ".$this->tableName." SET ";
+        $size=sizeof($props);
+        foreach ($props as $key => $value) {
+            if($key != $this->primaryKey){
+                if($size != sizeof($props)){
+                    $stmt.=",";
+                }
+                $stmt.=$key."=:".$key;
+                $size--;
+            }
+        }
+        $stmt.=" WHERE ".$this->primaryKey."=:".$this->primaryKey;
+        /*$size=sizeof($primaryKeyArray);
+        foreach ($primaryKeyArray as $key => $value) {
+            if($size != sizeof($primaryKeyArray)){
+                $stmt.=" AND ";
+            }
+            $stmt.=$key."=:".$key;
+            $size--;
+        }*/
+        return $stmt;
+    }
+
+    public function getDeleteStatement($props){
+
+    }
+    public function getTableName(){
+        return $this->tableName;
+    }
+    public function getPrimaryKey(){
+        return $this->primaryKey;
+    }
 }

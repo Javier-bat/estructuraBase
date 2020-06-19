@@ -7,7 +7,7 @@ class DB {
     private $dbName="Prueba";
 
     public function __construct() {
-        $this->conexion = new PDO("mysql:dbname=".$dbName.";host=".$host, $this->usuario, $this->contrasena,array(
+        $this->conexion = new PDO("mysql:dbname=".$this->dbName.";host=".$this->host, $this->usuario, $this->contrasena,array(
             PDO::ATTR_PERSISTENT => true
         ));
         $this->conexion->exec("SET CHARACTER SET utf8");
